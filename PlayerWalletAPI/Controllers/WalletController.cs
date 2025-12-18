@@ -35,7 +35,7 @@ public class WalletController(IWalletService walletService) : ControllerBase
                 ignoreCase: true,
                 out var transactionType))
         {
-            return Conflict($"Invalid transaction type. Use '{TransactionType.Credit}' or '{TransactionType.Debit}'");
+            return BadRequest($"Invalid transaction type. Use '{TransactionType.Credit}' or '{TransactionType.Debit}'");
         }
 
         // use exception filter
@@ -56,6 +56,9 @@ public class WalletController(IWalletService walletService) : ControllerBase
         }
     }
 
+    /// <summary>
+    /// Retrieves wallet transaction for a player
+    /// </summary>
     [HttpGet("transactions")]
     public async Task<IActionResult> GetTransactions(
         string playerId,
@@ -66,6 +69,9 @@ public class WalletController(IWalletService walletService) : ControllerBase
         return Ok(transactions);
     }
 
+    /// <summary>
+    /// Retrieves a player's balance
+    /// </summary>
     [HttpGet("balance")]
     public async Task<IActionResult> GetBalance(
         string playerId,

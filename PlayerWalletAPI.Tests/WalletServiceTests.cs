@@ -55,10 +55,10 @@ public class WalletServiceTests
         var playerId = "0001";
 
         var transactions = new List<PlayerTransactionEntity>
-    {
-        new() { Amount = 82.70m, TransactionType = TransactionType.Credit },
-        new() { Amount = 30.46m, TransactionType = TransactionType.Debit }
-    };
+        {
+            new() { Amount = 82.70m, TransactionType = TransactionType.Credit },
+            new() { Amount = 30.46m, TransactionType = TransactionType.Debit }
+        };
 
         _repoMock
             .Setup(r => r.GetPlayerTransactionsAsync(playerId, It.IsAny<CancellationToken>()))
@@ -70,6 +70,20 @@ public class WalletServiceTests
     }
 
     [Fact]
+    public async Task GetBalanceAsync_NoTransactions_ReturnsZero()
+    {
+        var playerId = "0003";
+
+        _repoMock
+            .Setup(r => r.GetPlayerTransactionsAsync(playerId, It.IsAny<CancellationToken>()))
+            .ReturnsAsync([]);
+
+        var balance = await _service.GetBalanceAsync(playerId);
+
+        Assert.Equal(0m, balance);
+    }
+
+    [Fact]
     public async Task GetTransactionsAsync_UsesCache()
     {
         var playerId = "0002";
@@ -78,7 +92,6 @@ public class WalletServiceTests
             .Setup(r => r.GetPlayerTransactionsAsync(playerId, It.IsAny<CancellationToken>()))
             .ReturnsAsync([]);
 
-        await _service.GetTransactionsAsync(playerId);
         await _service.GetTransactionsAsync(playerId);
 
         _repoMock.Verify(
@@ -109,5 +122,4 @@ public class WalletServiceTests
             r => r.GetPlayerTransactionsAsync(playerId, It.IsAny<CancellationToken>()),
             Times.Exactly(2));
     }
-
 }
