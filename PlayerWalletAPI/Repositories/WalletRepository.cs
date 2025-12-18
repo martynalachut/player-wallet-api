@@ -10,7 +10,7 @@ public interface IWalletRepository
     Task<List<PlayerTransactionEntity>> GetPlayerTransactionsAsync(
         string playerId,
         CancellationToken token = default);
-    Task AddAsync(PlayerTransactionEntity playerTransaction, CancellationToken token = default);
+    Task<string> AddAsync(PlayerTransactionEntity playerTransaction, CancellationToken token = default);
     Task UpdateAsync(PlayerTransactionEntity playerTransaction, CancellationToken token = default);
 }
 
@@ -36,12 +36,13 @@ public class WalletRepository(WalletDbContext walletDbContext) : IWalletReposito
             .ToListAsync(token);
     }
 
-    public async Task AddAsync(
+    public async Task<string> AddAsync(
         PlayerTransactionEntity playerTransaction,
         CancellationToken token = default)
     {
         walletDbContext.WalletTransactions.Add(playerTransaction);
         await walletDbContext.SaveChangesAsync(token);
+        return playerTransaction.Id;
     }
 
     public async Task UpdateAsync(

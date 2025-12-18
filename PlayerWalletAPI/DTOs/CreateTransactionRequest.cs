@@ -1,8 +1,9 @@
 namespace PlayerWalletAPI.DTOs;
 
-public class CreateTransactionRequest
-{
-    public decimal Amount { get; init; }
-    public string TransactionType { get; init; }
-    public string Reference { get; init; }
-}
+public record CreateTransactionRequest(
+    decimal Amount,
+    /// <example>credit</example>
+    string TransactionType,
+    /// <example>WELCOME_BONUS_001</example>
+    string Reference
+    );

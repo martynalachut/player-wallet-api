@@ -2,10 +2,12 @@ using PlayerWalletAPI.Models;
 
 namespace PlayerWalletAPI.DTOs;
 
-public record PlayerTransaction(
-    string Id,
-    string PlayerId,
-    decimal Amount,
-    TransactionType TransactionType,
-    string Reference,
-    DateTime CreatedTimestamp);
+public class PlayerTransactionDto
+{
+    public string Id { get; init; }
+    public string PlayerId { get; init; }
+    public decimal Amount { get; init; }
+    public TransactionType TransactionType { get; init; }
+    public string Reference { get; init; }
+    public DateTime CreatedTimestamp { get; init; }
+}
